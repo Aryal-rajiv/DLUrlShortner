@@ -1,30 +1,23 @@
+require('dotenv').config();
+const connectDB = require("./database/db");
 const express = require('express');
+const cors = require('cors');
+const urlRoutes = require('./routes/urlRoutes');
+
 const app = express();
-const port = 3000;
+const port = process.env.PORT;
+
+
+//conect to MongoDB
+connectDB();
 
 
 //Middleware to parse JSON request bodies
-app.use(express.json());
+app.use(cors()); //Enables cors for all routes
+app.use(express.json()); //To parse json request
 
 
 //Define routes
-app.get('/', (req, res) => {
-    res.send('Hello World! Welcome to DLShort one step process to shorten your URL');
-});
+app.use(urlRoutes);
 
-app.get('/api/v1/shortner', (req, res)=> {
-    res.send('http://aryalrajiv.com.np');
-});
-
-
-//Define a POST route with a request body
-app.post('/post', (req, res) => {
-    const data = req.body;
-    res.json({messege:"Data received. Data:", data});
-
-});
-
-//Start the server
-app.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
-}) ;
+app.listen(PORT, () => console.log(`Server is running on port ${PORT}` ));
