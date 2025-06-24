@@ -12,10 +12,18 @@ const urlSchema = new mongoose.Schema({
         index: true,
     },
     clicks: { type: Number, default: 0 },
-    createdAt: {type: Date, default: Date.now, expires: "30d"}, //Auto delete after 30 days
+    createdAt: {type: Date, default: Date.now, expires: "30d"},
 },
-{versionkey: false} //prevents mongoose from adding version key  '__v' to document
+{versionKey: false}
 
 );
 
-module.exports = mongoose.model('URL', urlSchema);
+const userSchema = new mongoose.Schema({
+    username: { type: String, required: true, unique: true },
+    password: { type: String, required: true }, 
+});
+
+const UserModel = mongoose.model('User', userSchema);
+const UrlModel = mongoose.model('Url', urlSchema);
+
+module.exports = { UrlModel, UserModel };
